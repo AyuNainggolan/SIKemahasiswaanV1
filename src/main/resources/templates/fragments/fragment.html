@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>SI Kemahasiswaan</title>
+	</head>
+	<body>
+		<head th:fragment="head">
+		  <meta charset="utf-8" />
+		  <title>SI Kemahasiswaan</title>
+		  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+		  <meta content="" name="keywords" />
+		  <meta content="" name="description" />
+		
+		  <!-- Favicons -->
+		  <link th:href="@{/img/favicon.png}" rel="icon" />
+		  <link th:href="@{/img/apple-touch-icon.png}" rel="apple-touch-icon" />
+		
+		  <!-- Bootstrap CSS File -->
+		  <link th:href="@{/lib/bootstrap/css/bootstrap.min.css}" rel="stylesheet" />
+		
+		  <!-- Libraries CSS Files -->
+		  <link th:href="@{/lib/font-awesome/css/font-awesome.min.css}" rel="stylesheet" />
+		  <link th:href="@{/lib/animate/animate.min.css}" rel="stylesheet" />
+		
+		  <!-- Main Stylesheet File -->
+		  <link th:href="@{/css/style.css}" rel="stylesheet" />
+		</head>
+		<header id="header" th:fragment="header">
+		    <div class="container">
+		
+		      <div id="logo" class="pull-left">
+		        <h2>SI Kemahasiswaan</h2>
+		      </div>
+		
+		      <nav id="nav-menu-container">
+		        <ul class="nav-menu">
+		          <li class="menu-active"><a href="/">Home</a></li>
+		          <li><a href="/mahasiswa/tambah">Tambah Mahasiswa</a></li>
+		          <li><a href="/kelulusan">Kelulusan Mahasiswa</a></li>
+		          <li><a href="/mahasiswa/viewCari">Cari Mahasiswa</a></li>
+		        </ul>
+		      </nav><!-- #nav-menu-container -->
+				
+				
+				
+		    </div>
+		  </header>
+		 <div th:fragment="footer">
+		 	<hr/>
+		 	<h4>Mata Kuliah APAP</h4>
+		 </div>
+	</body>
+</html>
