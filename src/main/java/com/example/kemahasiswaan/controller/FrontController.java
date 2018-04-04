@@ -15,22 +15,31 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.example.kemahasiswaan.service.StudentService;
+import com.example.kemahasiswaan.service.FakultasService;
+import com.example.kemahasiswaan.service.MahasiswaService;
+import com.example.kemahasiswaan.service.ProgramStudiService;
+import com.example.kemahasiswaan.service.UniversitasService;
 
 import lombok.extern.slf4j.Slf4j;
 
-import com.example.kemahasiswaan.model.Fakultas;
-import com.example.kemahasiswaan.model.Kelulusan;
-import com.example.kemahasiswaan.model.ProgramStudi;
-import com.example.kemahasiswaan.model.StudentModel;
-import com.example.kemahasiswaan.model.Universitas;
+import com.example.kemahasiswaan.model.FakultasModel;
+import com.example.kemahasiswaan.model.KelulusanModel;
+import com.example.kemahasiswaan.model.ProgramStudiModel;
+import com.example.kemahasiswaan.model.MahasiswaModel;
+import com.example.kemahasiswaan.model.UniversitasModel;
 
 @Slf4j
 @Controller
-public class StudentController {
+public class FrontController {
 	
 	@Autowired
-    StudentService studentDAO;
+    MahasiswaService studentDAO;
+	@Autowired
+	FakultasService fakultasDAO;
+	@Autowired
+	ProgramStudiService prodiDAO;
+	@Autowired
+	UniversitasService universitasDAO;
 	
 	@RequestMapping("/")
 	public String index() {
@@ -39,7 +48,7 @@ public class StudentController {
 	
 	@RequestMapping("/mahasiswa")
 	public String view(Model model, @RequestParam(value = "npm", required = false) String npm) {
-		StudentModel student = studentDAO.selectStudent (npm);
+		MahasiswaModel student = studentDAO.selectStudent (npm);
 		
 		if(student == null) {
 			model.addAttribute("npm", npm);
@@ -64,13 +73,13 @@ public class StudentController {
 	
 	@RequestMapping("/mahasiswa/tambah")
 	public String addStudent(Model model) {
-		model.addAttribute("student", new StudentModel());
+		model.addAttribute("student", new MahasiswaModel());
 		model.addAttribute("method", "add");
 		return "add";
 	}
 	
     @RequestMapping(value = "/mahasiswa/tambah", method = RequestMethod.POST)
-    public String addSubmit (StudentModel student, Model model)
+    public String addSubmit (MahasiswaModel student, Model model)
     {
     	String tahun_masuk = student.getTahun_masuk();
     	String kode_univ = this.getKodeUniv(String.valueOf(student.getId_prodi()));
@@ -101,7 +110,7 @@ public class StudentController {
     @RequestMapping("/mahasiswa/ubah/{npm}")
     public String update (Model model, @PathVariable(value = "npm") String npm)
     {
-    	StudentModel student = studentDAO.selectStudent (npm);
+    	MahasiswaModel student = studentDAO.selectStudent (npm);
 
         if (student != null) {
         	model.addAttribute("student",student);
@@ -115,7 +124,7 @@ public class StudentController {
     }
     
     @RequestMapping(value = "/mahasiswa/ubah/{npm}", method = RequestMethod.POST)
-    public String updateSubmit (@RequestParam(value = "npm", required = false) String npm, StudentModel student, Model model)
+    public String updateSubmit (@RequestParam(value = "npm", required = false) String npm, MahasiswaModel student, Model model)
     {
     	log.info("ini NPM "+student.getNpm());
     	String tahun_masuk = student.getTahun_masuk();
@@ -155,7 +164,7 @@ public class StudentController {
     @RequestMapping("/mahasiswa/kelulusan")
     public String getKelulusan(@RequestParam(value = "thn", required = false) int tahun, @RequestParam(value = "prodi", required = false) String prodi, Model model) {
     	int totalLulus = studentDAO.getTotalLulus(prodi, tahun);
-    	Kelulusan detailMahasiswaandTotal= studentDAO.getTotalMahasiswaAndDetail(prodi, tahun);
+    	KelulusanModel detailMahasiswaandTotal= studentDAO.getTotalMahasiswaAndDetail(prodi, tahun);
     	int totalMahasiswa = detailMahasiswaandTotal.getTotal();
     	
     	int percentageLulus = (int) Math.round(((double) totalLulus/totalMahasiswa) * 100);
@@ -169,7 +178,8 @@ public class StudentController {
     
     @RequestMapping("/mahasiswa/viewCari")
     public String cariBasedUniv(Model model) {
-    	List<Universitas> univ = studentDAO.getUniversitas();
+    	List<UniversitasModel> univ = universitasDAO.getUniversitas();
+    	
     	model.addAttribute("univs", univ);
     	
     	return "cari-univ";
@@ -177,14 +187,14 @@ public class StudentController {
     
     @RequestMapping("/mahasiswa/cari")
     public String postCariBasedUniv(@RequestParam(value = "univ", required = false) int univ , Model model) {
-    	List<Universitas> univs = studentDAO.getUniversitas();
-    	for(Universitas item: univs) {
+    	List<UniversitasModel> univs = universitasDAO.getUniversitas();
+    	for(UniversitasModel item: univs) {
     		if(item.getId() == univ) {
     			model.addAttribute("univSelected", item);
     		}
     	}
     	model.addAttribute("id_univ", univ);
-    	List<Fakultas> fakultas= studentDAO.getFakultas(univ);
+    	List<FakultasModel> fakultas= fakultasDAO.getFakultas(univ);
     	model.addAttribute("fakultas", fakultas);
     	return "cari-fakultas";
     }
@@ -193,26 +203,31 @@ public class StudentController {
     public String postCariBasedFakultas(@RequestParam(value = "univ", required = false) int univ ,
     		@RequestParam(value = "fakultas", required = false) int fak, Model model) {
     	
-    	List<Universitas> univs = studentDAO.getUniversitas();
+    	List<UniversitasModel> univs = universitasDAO.getUniversitas();
 		model.addAttribute("univSelected", univs);
     	model.addAttribute("id_univ", univ);
     	
-    	List<Fakultas> fakultas= studentDAO.getFakultas(univ);
+    	List<FakultasModel> fakultas= fakultasDAO.getFakultas(univ);
     	model.addAttribute("fakultas", fakultas);
     	model.addAttribute("id_fakultas", fak);
     	
-    	List<ProgramStudi> prodi = studentDAO.getProdi(fak);
+    	List<ProgramStudiModel> prodi = prodiDAO.getProdi(fak);
     	model.addAttribute("prodi", prodi);
     	return "cari-prodi";
     }
     
-    @RequestMapping("/mahasiswa/cari2")
-    public String postCariBasedFakultas(@RequestParam(value = "univ", required = false) int univ ,
+    @RequestMapping("/mahasiswa/cari3")
+    public String postCariBasedProdi(@RequestParam(value = "univ", required = false) int univ ,
     		@RequestParam(value = "fakultas", required = false) int fak,
     		@RequestParam(value = "prodi", required = false) int prodi,
     		Model model) {
     	
-    	return "index";
+    	List<MahasiswaModel> mahasiswa = studentDAO.getMahasiswaByProdi(prodi);
+    	model.addAttribute("mahasiswa", mahasiswa);
+    	model.addAttribute("prodi", prodiDAO.getNamaProdi(prodi));
+    	model.addAttribute("fakultas", fakultasDAO.getNamaFakultas(fak));
+    	model.addAttribute("universitas", universitasDAO.getNamaUniversitas(univ));
+    	return "viewall";
     }
     
     public String generateNPM(String tahun_masuk, String kode_univ, int kode_prodi, String jalur_masuk) {

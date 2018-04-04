@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Kelulusan {
+public class KelulusanModel {
 	private int total;
     private String nama_prodi;
     private String nama_fakultas;

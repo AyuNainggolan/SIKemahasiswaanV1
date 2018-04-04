@@ -20,7 +20,7 @@
 			  <div class="form-group row">
 			    <label for="tahun" class="col-sm-2 col-form-label">Universitas</label>
 			    <div class="col-sm-6">
-		  		  	<select class="form-control" id="univ" name="univ" readonly>
+		  		  	<select class="form-control" id="univ" name="univ" disabled>
   						<option th:each="univ : ${univSelected}" th:selected="${univ.id == id_univ}" th:value="${univ.id}" th:text="${univ.nama_univ}"></option>
     
 			  		</select>
@@ -29,7 +29,7 @@
 			  <div class="form-group row">
 			    <label for="tahun" class="col-sm-2 col-form-label">Fakultas</label>
 			    <div class="col-sm-6">
-		  		  	<select class="form-control" id="fakultas" name="fakultas" readonly>
+		  		  	<select class="form-control" id="fakultas" name="fakultas" disabled>
   						<option th:each="fak : ${fakultas}" th:selected="${fak.id == id_fakultas}" th:value="${fak.id}" th:text="${fak.nama_fakultas}"></option>
     
 			  		</select>
@@ -56,4 +56,12 @@
   </section>
 
 </body>
+
+<script th:inline="javascript">
+
+$(document).ready(function() {
+	$('form').submit(function () { $('[disabled]').removeAttr('disabled'); })
+} );
+</script>
+
 </html>

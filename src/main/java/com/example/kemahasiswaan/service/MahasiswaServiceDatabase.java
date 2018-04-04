@@ -5,25 +5,22 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.kemahasiswaan.dao.StudentMapper;
-import com.example.kemahasiswaan.model.Fakultas;
-import com.example.kemahasiswaan.model.Kelulusan;
-import com.example.kemahasiswaan.model.ProgramStudi;
-import com.example.kemahasiswaan.model.StudentModel;
-import com.example.kemahasiswaan.model.Universitas;
+import com.example.kemahasiswaan.dao.MahasiswaMapper;
+import com.example.kemahasiswaan.model.KelulusanModel;
+import com.example.kemahasiswaan.model.MahasiswaModel;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
-public class StudentServiceDatabase implements StudentService {
+public class MahasiswaServiceDatabase implements MahasiswaService {
 
 	@Autowired
-    private StudentMapper studentMapper;
+    private MahasiswaMapper studentMapper;
 
 
     @Override
-    public StudentModel selectStudent (String npm)
+    public MahasiswaModel selectStudent (String npm)
     {
         log.info ("select student with npm {}", npm);
         return studentMapper.selectStudent (npm);
@@ -31,7 +28,7 @@ public class StudentServiceDatabase implements StudentService {
 
 
     @Override
-    public List<StudentModel> selectAllStudents ()
+    public List<MahasiswaModel> selectAllStudents ()
     {
         log.info ("select all students");
         return studentMapper.selectAllStudents ();
@@ -39,7 +36,7 @@ public class StudentServiceDatabase implements StudentService {
 
 
     @Override
-    public boolean addStudent (StudentModel student)
+    public boolean addStudent (MahasiswaModel student)
     {
         return studentMapper.addStudent (student);
     }
@@ -53,7 +50,7 @@ public class StudentServiceDatabase implements StudentService {
     }
     
     @Override
-    public boolean updateStudent (StudentModel student)
+    public boolean updateStudent (MahasiswaModel student)
     {
     	log.info("ini   ", student.getOldNpm());
     	boolean return_val = studentMapper.updateStudent(student);
@@ -78,7 +75,7 @@ public class StudentServiceDatabase implements StudentService {
     }
     
     @Override
-    public Kelulusan getTotalMahasiswaAndDetail(String id_prodi, int tahun) {
+    public KelulusanModel getTotalMahasiswaAndDetail(String id_prodi, int tahun) {
     	
     	log.info("getgetTotalMahasiswaAndDetail "+ id_prodi + " tahun "+ tahun);
     	return studentMapper.getTotalMahasiswaAndDetail(id_prodi, tahun);
@@ -91,17 +88,9 @@ public class StudentServiceDatabase implements StudentService {
     }
     
     @Override
-    public List<Universitas> getUniversitas() {
-    	return studentMapper.getUniversitas();
+    public List<MahasiswaModel> getMahasiswaByProdi(int id_prodi){
+    	log.info("getMahasiswaByProdi "+ id_prodi);
+    	return studentMapper.getMahasiswaByProdi(id_prodi);
     }
     
-    @Override
-    public List<Fakultas> getFakultas(int id_univ){
-    	return studentMapper.getFakultas(id_univ);
-    }
-    
-    @Override
-    public List<ProgramStudi> getProdi(int id_fakultas) {
-    	return studentMapper.getProdi(id_fakultas);
-    }
 }

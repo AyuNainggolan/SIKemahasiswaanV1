@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class StudentModel {
+public class MahasiswaModel {
 	private String npm;
     private String nama;
     private String tempat_lahir;

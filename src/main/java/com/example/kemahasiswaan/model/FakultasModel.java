@@ -7,9 +7,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProgramStudi {
+public class FakultasModel {
 	private int id;
-    private String kode_prodi;
-    private String nama_prodi;
-    private String id_fakultas;
+    private String kode_fakultas;
+    private String nama_fakultas;
+    private String id_univ;
 }
