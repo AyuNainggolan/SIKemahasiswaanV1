@@ -93,4 +93,13 @@ public class MahasiswaServiceDatabase implements MahasiswaService {
     	return studentMapper.getMahasiswaByProdi(id_prodi);
     }
     
+    @Override
+    public MahasiswaModel getMahasiswaTermuda(int id_prodi, int tahun_masuk) {
+    	return studentMapper.getMahasiswaTermuda(id_prodi, tahun_masuk);
+    }
+    
+    @Override
+    public MahasiswaModel getMahasiswaTertua(int id_prodi, int tahun_masuk) {
+    	return studentMapper.getMahasiswaTertua(id_prodi, tahun_masuk);
+    }
 }

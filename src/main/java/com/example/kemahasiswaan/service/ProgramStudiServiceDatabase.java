@@ -26,4 +26,9 @@ public class ProgramStudiServiceDatabase implements ProgramStudiService {
     public String getNamaProdi(int id_prodi) {
     	return prodiMapper.getNamaProdi(id_prodi);
     }
+    
+    @Override
+    public int getKodeProdiByID(int id_prodi) {
+    	return prodiMapper.getKodeProdiByID(id_prodi);
+    }
 }

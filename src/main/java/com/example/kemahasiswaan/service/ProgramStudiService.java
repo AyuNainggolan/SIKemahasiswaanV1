@@ -9,4 +9,6 @@ public interface ProgramStudiService {
 	List<ProgramStudiModel> getProdi(int id_fakultas);
 	
 	String getNamaProdi(int id_prodi);
+	
+	int getKodeProdiByID(int id_prodi);
 }

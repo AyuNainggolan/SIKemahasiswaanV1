@@ -1012,3 +1012,7 @@ body.mobile-nav-active #mobile-nav-toggle {
   color: #ccc;
 }
 
+button {
+	margin-left: 15px;
+}
+

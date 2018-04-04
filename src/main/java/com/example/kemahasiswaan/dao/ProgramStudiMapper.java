@@ -23,4 +23,7 @@ public interface ProgramStudiMapper {
     
     @Select("SELECT nama_prodi FROM program_studi WHERE id = #{id_prodi}")
     String getNamaProdi(@Param("id_prodi") int id_prodi);
+    
+    @Select("SELECT kode_prodi FROM program_studi WHERE id = #{id_prodi}")
+    int getKodeProdiByID(@Param("id_prodi") int id_prodi);
 }

@@ -39,14 +39,14 @@ public interface MahasiswaMapper {
     boolean updateStudent(MahasiswaModel student);
     
     @Select("SELECT kode_univ FROM `program_studi` p left join "
-    		+ "fakultas f on p.id_fakultas = f.id left JOIN universitas u ON f.id_univ = u.id WHERE p.kode_prodi = #{id_prodi}")
+    		+ "fakultas f on p.id_fakultas = f.id left JOIN universitas u ON f.id_univ = u.id WHERE p.id = #{id_prodi}")
     List<String> getKodeUniv(String id_prodi);
     
-    @Select("SELECT COUNT(*) FROM mahasiswa WHERE id_prodi = (SELECT id FROM program_studi WHERE kode_prodi = #{id_prodi} LIMIT 1) AND status = 'Lulus' AND tahun_masuk = #{tahun}")
+    @Select("SELECT COUNT(*) FROM mahasiswa WHERE id_prodi = #{id_prodi} AND status = 'Lulus' AND tahun_masuk = #{tahun}")
     List<Integer> getTotalMahasiswaLulus(@Param("id_prodi") String id_prodi, @Param("tahun") int tahun);
     
     @Select("SELECT count(m.npm) as total, p.nama_prodi, f.nama_fakultas, u.nama_univ FROM mahasiswa m LEFT JOIN program_studi p ON m.id_prodi = p.id "
-    		+ "LEFT JOIN fakultas f ON f.id = p.id_fakultas LEFT JOIN universitas u ON f.id_univ = u.id WHERE p.kode_prodi = #{id_prodi} AND m.tahun_masuk = #{tahun}")
+    		+ "LEFT JOIN fakultas f ON f.id = p.id_fakultas LEFT JOIN universitas u ON f.id_univ = u.id WHERE p.id = #{id_prodi} AND m.tahun_masuk = #{tahun}")
     KelulusanModel getTotalMahasiswaAndDetail(@Param("id_prodi") String id_prodi, @Param("tahun") int tahun);
     
     @Select("SELECT npm FROM mahasiswa WHERE LEFT(npm, 9) = #{kode} ORDER BY npm DESC LIMIT 1")
@@ -54,5 +54,11 @@ public interface MahasiswaMapper {
     
     @Select("SELECT * FROM mahasiswa WHERE id_prodi = #{id_prodi}")
     List<MahasiswaModel> getMahasiswaByProdi(@Param("id_prodi") int id_prodi);
+    
+    @Select("SELECT * FROM mahasiswa WHERE tahun_masuk = #{tahun_masuk} AND id_prodi = #{id_prodi} ORDER BY tanggal_lahir ASC LIMIT 1")
+    MahasiswaModel getMahasiswaTertua(@Param("id_prodi") int id_prodi, @Param("tahun_masuk") int tahun_masuk);
+    
+    @Select("SELECT * FROM mahasiswa WHERE tahun_masuk = #{tahun_masuk} AND id_prodi = #{id_prodi} ORDER BY tanggal_lahir DESC LIMIT 1")
+    MahasiswaModel getMahasiswaTermuda(@Param("id_prodi") int id_prodi, @Param("tahun_masuk") int tahun_masuk);
     
 }

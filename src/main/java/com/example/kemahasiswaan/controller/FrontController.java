@@ -83,7 +83,7 @@ public class FrontController {
     {
     	String tahun_masuk = student.getTahun_masuk();
     	String kode_univ = this.getKodeUniv(String.valueOf(student.getId_prodi()));
-    	int kode_prodi = student.getId_prodi();
+    	int kode_prodi = prodiDAO.getKodeProdiByID(student.getId_prodi());
     	String jalur_masuk = student.getJalur_masuk();
        
         String kodeNPM = this.generateNPM(tahun_masuk, kode_univ, kode_prodi, jalur_masuk);
@@ -126,10 +126,9 @@ public class FrontController {
     @RequestMapping(value = "/mahasiswa/ubah/{npm}", method = RequestMethod.POST)
     public String updateSubmit (@RequestParam(value = "npm", required = false) String npm, MahasiswaModel student, Model model)
     {
-    	log.info("ini NPM "+student.getNpm());
     	String tahun_masuk = student.getTahun_masuk();
     	String kode_univ = this.getKodeUniv(String.valueOf(student.getId_prodi()));
-    	int kode_prodi = student.getId_prodi();
+    	int kode_prodi = prodiDAO.getKodeProdiByID(student.getId_prodi());
     	String jalur_masuk = student.getJalur_masuk();
        
         String kodeNPM = this.generateNPM(tahun_masuk, kode_univ, kode_prodi, jalur_masuk);
@@ -228,6 +227,27 @@ public class FrontController {
     	model.addAttribute("fakultas", fakultasDAO.getNamaFakultas(fak));
     	model.addAttribute("universitas", universitasDAO.getNamaUniversitas(univ));
     	return "viewall";
+    }
+    
+    @RequestMapping("/mahasiswa/cariUsia")
+    public String viewCariMahasiswaTertutaTermuda() {
+    	
+    	return "view-usia";
+    }
+    
+    @RequestMapping(value = "/mahasiswa/postCariUsia")
+    public String cariMahasiswaTertutaTermuda(
+    		@RequestParam(value = "id_prodi", required = false) int id_prodi, 
+    		@RequestParam(value = "tahun_masuk", required = false) int tahun_masuk,
+    		Model model) {
+    	
+    	MahasiswaModel mahasiswaTertua = studentDAO.getMahasiswaTertua(id_prodi, tahun_masuk);
+    	MahasiswaModel mahasiswaTermuda = studentDAO.getMahasiswaTermuda(id_prodi, tahun_masuk);
+    	
+    	model.addAttribute("tertua", mahasiswaTertua);
+    	model.addAttribute("termuda", mahasiswaTermuda);
+    	
+    	return "view-detail-usia";
     }
     
     public String generateNPM(String tahun_masuk, String kode_univ, int kode_prodi, String jalur_masuk) {

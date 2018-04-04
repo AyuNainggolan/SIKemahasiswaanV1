@@ -32,4 +32,8 @@ public interface MahasiswaService {
 	int getTotalLulus(String id_prodi, int tahun);
 	
 	List<MahasiswaModel> getMahasiswaByProdi(int id_prodi);
+	
+	MahasiswaModel getMahasiswaTermuda(int id_prodi, int tahun_masuk);
+	
+	MahasiswaModel getMahasiswaTertua(int id_prodi, int tahun_masuk);
 }
